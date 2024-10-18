@@ -17,7 +17,7 @@ public interface PhotoClient {
   Flux<Photo> getAll();
 
   @GetExchange("{photoId}")
-  Mono<Photo> getById(@PathVariable("photoId") String id);
+  Mono<Photo> getById(@PathVariable("photoId") String photoId);
 
   @PostExchange
   Mono<Photo> add(
