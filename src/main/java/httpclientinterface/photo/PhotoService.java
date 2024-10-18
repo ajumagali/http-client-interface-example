@@ -1,44 +1,26 @@
 package httpclientinterface.photo;
 
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 public class PhotoService {
+  private final PhotoClient photoClient;
 
-  private final WebClient photoWebClient;
-
-  public PhotoService() {
-    photoWebClient = WebClient.builder()
-          .baseUrl("https://jsonplaceholder.typicode.com")
-          .build();
+  public PhotoService(PhotoClient photoClient) {
+    this.photoClient = photoClient;
   }
 
   public Mono<Photo> getById(String id) {
-    return photoWebClient.get()
-          .uri(uriBuilder -> uriBuilder.path("photos/{photoId}").build(id))
-          .retrieve()
-          .bodyToMono(Photo.class);
+    return photoClient.getById(id);
   }
 
   public Flux<Photo> getAll() {
-    return photoWebClient.get()
-          .uri("photos")
-          .retrieve()
-          .bodyToFlux(Photo.class);
+    return photoClient.getAll();
   }
 
   public Mono<Photo> add(Photo photo) {
-    return photoWebClient.post()
-          .uri("photos")
-          .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-          .bodyValue(photo)
-          .retrieve()
-          .bodyToMono(Photo.class);
+    return photoClient.add(photo,  null);
   }
 }
