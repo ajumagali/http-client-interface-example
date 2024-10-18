@@ -41,4 +41,17 @@ class PhotoControllerTest {
           });
   }
 
+  @Test
+  void testAddPhoto() {
+    var requestPayload = new Photo(5001, 101, "HTTP Client Interface", "https://tinyurl.com/httpclientinterface", "https://tinyurl.com/httpclientinterface");
+
+    webTestClient.post()
+          .uri("/v1/photos")
+          .bodyValue(requestPayload)
+          .exchange()
+          .expectStatus().isCreated()
+          .expectBody(Photo.class)
+          .value(photo -> assertEquals("HTTP Client Interface", photo.title()));
+  }
+
 }
