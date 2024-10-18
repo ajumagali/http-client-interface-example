@@ -1,5 +1,6 @@
 package httpclientinterface.photo;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,20 @@ class PhotoControllerTest {
           .returnResult(Photo.class)
           .getResponseBody()
           .subscribe(photo -> assertNotNull(photo.albumId()));
+  }
+
+  @Test
+  void testGetById() {
+    webTestClient.get()
+          .uri("/v1/photos/1")
+          .exchange()
+          .expectStatus().is2xxSuccessful()
+          .returnResult(Photo.class)
+          .getResponseBody()
+          .subscribe(photo -> {
+            assertEquals(1, photo.id());
+            assertEquals(1, photo.albumId());
+          });
   }
 
 }
