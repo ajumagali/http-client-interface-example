@@ -21,7 +21,7 @@ public class PhotoService {
 
   public Mono<Photo> getById(String id) {
     return photoWebClient.get()
-          .uri(uriBuilder -> uriBuilder.path("photos/{userId}").build(id))
+          .uri(uriBuilder -> uriBuilder.path("photos/{photoId}").build(id))
           .retrieve()
           .bodyToMono(Photo.class);
   }
